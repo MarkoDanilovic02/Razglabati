@@ -27,7 +27,56 @@ const Chat = () => {
           <img src="./info.png" alt="media" />
         </div>
       </div>
-      <div className="center"></div>
+      <div className="center">
+        <div className="message">
+          <img src="./avatar.png" alt="" />
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Distinctio nam quas
+            </p>
+            <span>5 minutes ago</span>
+          </div>
+        </div>
+        <div className="message own">
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Distinctio nam quas
+            </p>
+            <span>5 minutes ago</span>
+          </div>
+        </div>
+        <div className="message">
+          <img src="./avatar.png" alt="" />
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Distinctio nam quas
+            </p>
+            <span>5 minutes ago</span>
+          </div>
+        </div>
+        <div className="message own">
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Distinctio nam quas
+            </p>
+            <span>5 minutes ago</span>
+          </div>
+        </div>
+        <div className="message">
+          <img src="./avatar.png" alt="" />
+          <div className="text">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Distinctio nam quas
+            </p>
+            <span>5 minutes ago</span>
+          </div>
+        </div>
+      </div>
       <div className="bottom">
         <div className="icons">
           <img src="./img.png" alt="" />
