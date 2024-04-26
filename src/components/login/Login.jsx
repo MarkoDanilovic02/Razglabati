@@ -1,5 +1,6 @@
 import "./login.css";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
@@ -17,6 +18,11 @@ const Login = () => {
     }
   };
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    toast.warn("hello");
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -32,7 +38,7 @@ const Login = () => {
     <div className="login">
       <div className="item">
         <h2>Welcome back</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
           <input type="text" placeholder="Password" name="password" />
           <button>Sign in</button>
