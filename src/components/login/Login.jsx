@@ -2,7 +2,7 @@ import "./login.css";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
+import { auth } from "../../lib/firebase";
 const Login = () => {
   const [avatar, setAvatar] = useState({
     file: null,
@@ -18,20 +18,21 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    toast.warn("hello");
-  };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
     const { username, email, password } = Object.fromEntries(formData);
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
       console.log(err);
+      toast.error(err.message);
     }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -40,7 +41,7 @@ const Login = () => {
         <h2>Welcome back</h2>
         <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
-          <input type="text" placeholder="Password" name="password" />
+          <input type="password" placeholder="Password" name="password" />
           <button>Sign in</button>
         </form>
       </div>
@@ -57,11 +58,10 @@ const Login = () => {
             id="file"
             style={{ display: "none" }}
             onChange={handleAvatar}
-          />{" "}
-          //koj kurac
+          />
           <input type="text" placeholder="Username" name="username" />
           <input type="text" placeholder="Email" name="email" />
-          <input type="text" placeholder="Password" name="password" />
+          <input type="password" placeholder="Password" name="password" />
           <button>Sign up</button>
         </form>
       </div>
