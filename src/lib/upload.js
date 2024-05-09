@@ -16,7 +16,7 @@ const upload = async (file) => {
         console.log("Upload is " + progress + "% done");
       },
       (error) => {
-        reject("Something went wrong!" + error.code);
+        reject("Something's wrong!" + error.code);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
