@@ -16,6 +16,7 @@ const Detail = () => {
   const [sharedPhotos, setSharedPhotos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showPhotos, setShowPhotos] = useState(true);
 
   const {
     chatId,
@@ -102,23 +103,29 @@ const Detail = () => {
           </div>
         </div>
         <div className="option">
-          <div className="title">
+          <div className="title" onClick={() => setShowPhotos((prev) => !prev)}>
             <span>Shared photos</span>
-            <img src="./arrowDown.png" alt="" />
+            {showPhotos ? (
+              <img src="./arrowDown.png" alt="" />
+            ) : (
+              <img src="./arrowUp.png" alt="" />
+            )}
           </div>
-          <div className="photos">
-            {sharedPhotos.map((photo, index) => (
-              <div
-                className="photoItem"
-                key={index}
-                onClick={() => openModal(photo.url)}
-              >
-                <div className="photoDetail">
-                  <img src={photo.url} alt={`Shared photo ${index}`} />
+          {showPhotos && (
+            <div className="photos">
+              {sharedPhotos.map((photo, index) => (
+                <div
+                  className="photoItem"
+                  key={index}
+                  onClick={() => openModal(photo.url)}
+                >
+                  <div className="photoDetail">
+                    <img src={photo.url} alt={`Shared photo ${index}`} />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="option">
           <div className="title">
