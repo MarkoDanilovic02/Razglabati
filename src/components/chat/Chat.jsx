@@ -43,6 +43,10 @@ const Chat = () => {
     };
   }, [chatId]);
 
+  useEffect(() => {
+    if (img.file) handleSend();
+  }, [img]);
+
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
     setOpen(false);
@@ -58,7 +62,7 @@ const Chat = () => {
   };
 
   const handleSend = async () => {
-    if (text === "") return;
+    if (text === "" && img.file === null) return;
 
     let imgUrl = null;
 
@@ -118,7 +122,6 @@ const Chat = () => {
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
-            <p>Lorem ipsum dolor, sit amet.</p>
           </div>
         </div>
         <div className="icons">
@@ -128,20 +131,22 @@ const Chat = () => {
         </div>
       </div>
       <div className="center">
-        {chat?.messages?.map((message) => (
-          <div
-            className={
-              message.senderId === currentUser?.id ? "message own" : "message"
-            }
-            key={message?.createAt}
-          >
-            <div className="texts">
-              {message.img && <img src={message.img} alt="" />}
-              <p>{message.text}</p>
-              <span>{format(message.createdAt.toDate())}</span>
+        {chat?.messages?.map((message) => {
+          return (
+            <div
+              className={
+                message.senderId === currentUser?.id ? "message own" : "message"
+              }
+              key={message?.createAt}
+            >
+              <div className="texts">
+                {message.img && <img src={message.img} alt="" />}
+                {message.text !== "" ? <p>{message.text}</p> : null}
+                <span>{format(message.createdAt.toDate())}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         {img.url && (
           <div className="message own">
             <div className="texts">
