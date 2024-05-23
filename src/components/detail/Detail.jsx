@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../../lib/chatStore";
 import { auth, db } from "../../lib/firebase";
 import { useUserStore } from "../../lib/userStore";
+import Modal from "../modal/Modal";
 import "./detail.css";
 
 const Detail = () => {
   const [sharedPhotos, setSharedPhotos] = useState([]);
-  const [showPhotos, setShowPhotos] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const {
     chatId,
     user,
@@ -37,7 +40,7 @@ const Detail = () => {
           const photos = messages
             .filter((msg) => msg.img)
             .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
-            .map((msg) => msg.img);
+            .map((msg) => ({ url: msg.img, createdAt: msg.createdAt }));
           setSharedPhotos(photos);
         }
       } catch (err) {
@@ -68,6 +71,16 @@ const Detail = () => {
     resetChat();
   };
 
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   return (
     <div className="detail">
       <div className="user">
@@ -89,25 +102,23 @@ const Detail = () => {
           </div>
         </div>
         <div className="option">
-          <div className="title" onClick={() => setShowPhotos((prev) => !prev)}>
+          <div className="title">
             <span>Shared photos</span>
-            {showPhotos ? (
-              <img src="./arrowDown.png" alt="" />
-            ) : (
-              <img src="./arrowUp.png" alt="" />
-            )}
+            <img src="./arrowDown.png" alt="" />
           </div>
-          {showPhotos && (
-            <div className="photos">
-              {sharedPhotos.map((photo, index) => (
-                <div className="photoItem" key={index}>
-                  <div className="photoDetail">
-                    <img src={photo} alt={`Shared photo ${index}`} />
-                  </div>
+          <div className="photos">
+            {sharedPhotos.map((photo, index) => (
+              <div
+                className="photoItem"
+                key={index}
+                onClick={() => openModal(photo.url)}
+              >
+                <div className="photoDetail">
+                  <img src={photo.url} alt={`Shared photo ${index}`} />
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </div>
         <div className="option">
           <div className="title">
@@ -126,6 +137,13 @@ const Detail = () => {
           Logout
         </button>
       </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <img
+          src={selectedImage}
+          alt="Selected"
+          style={{ width: "100%", height: "auto" }}
+        />
+      </Modal>
     </div>
   );
 };
