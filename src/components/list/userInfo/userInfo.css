@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 
   .user {
     display: flex;
@@ -26,5 +27,21 @@
       height: 20px;
       cursor: pointer;
     }
+  }
+
+  .logoutBtn {
+    position: absolute;
+    right: 5.9%;
+    top: 70%;
+  }
+  .logout {
+    padding: 15px;
+    background-color: rgba(230, 74, 105, 0.553);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #1a73e8;
   }
 }
