@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./chatList.css";
+import AddUser from "./addUser/addUser";
 import { useUserStore } from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
-import AddUser from "./addUser/addUser";
 import { useChatStore } from "../../../lib/chatStore";
 
 const ChatList = () => {
@@ -12,7 +12,7 @@ const ChatList = () => {
   const [input, setInput] = useState("");
 
   const { currentUser } = useUserStore();
-  const { changeChat, chatId } = useChatStore();
+  const { chatId, changeChat } = useChatStore();
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -75,7 +75,7 @@ const ChatList = () => {
           <img src="./search.png" alt="" />
           <input
             type="text"
-            placeholder="Search here!"
+            placeholder="Search"
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
@@ -91,16 +91,30 @@ const ChatList = () => {
           className="item"
           key={chat.chatId}
           onClick={() => handleSelect(chat)}
+          style={{
+            backgroundColor: chat?.isSeen ? "transparent" : "#5183fe",
+          }}
         >
-          <img src={chat.user.avatar || "./avatar.png"} alt="" />
-          <div className="text">
-            <span>{chat.user.username}</span>
+          <img
+            src={
+              chat.user.blocked.includes(currentUser.id)
+                ? "./avatar.png"
+                : chat.user.avatar || "./avatar.png"
+            }
+            alt=""
+          />
+          <div className="texts">
+            <span>
+              {chat.user.blocked.includes(currentUser.id)
+                ? "User"
+                : chat.user.username}
+            </span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
       ))}
 
-      <p>{addMode && <AddUser />}</p>
+      {addMode && <AddUser />}
     </div>
   );
 };
