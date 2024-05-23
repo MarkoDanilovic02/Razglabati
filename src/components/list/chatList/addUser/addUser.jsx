@@ -14,8 +14,9 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
+import { toast } from "react-toastify";
 
-const AddUser = () => {
+const AddUser = ({ setAddMode }) => {
   const [user, setUser] = useState(null);
 
   const { currentUser } = useUserStore();
@@ -45,6 +46,15 @@ const AddUser = () => {
     const userChatsRef = collection(db, "userchats");
 
     try {
+      const userChatsDoc = await getDoc(doc(userChatsRef, currentUser.id));
+      const userChats = userChatsDoc.data()?.chats || [];
+
+      const userExists = userChats.some((chat) => chat.receiverId === user.id);
+
+      if (userExists) {
+        return toast.warn("User already exists in chat list");
+      }
+
       const newChatRef = doc(chatRef);
 
       await setDoc(newChatRef, {
@@ -74,8 +84,17 @@ const AddUser = () => {
     }
   };
 
+  const handleClose = () => {
+    setAddMode(false);
+  };
+
   return (
     <div className="addUser">
+      <div className="closeWrapper">
+        <button onClick={handleClose} className="closeButton">
+          X
+        </button>
+      </div>
       <form onSubmit={handleSearch}>
         <input type="text" placeholder="Username" name="username" />
         <button>Search</button>

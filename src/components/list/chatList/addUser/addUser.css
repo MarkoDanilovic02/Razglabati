@@ -60,4 +60,18 @@
       cursor: pointer;
     }
   }
+
+  .closeButton {
+    padding: 10px 15px;
+    border-radius: 60px;
+    background-color: #cc1c48;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  .closeWrapper {
+    display: flex;
+    justify-content: end;
+  }
 }
