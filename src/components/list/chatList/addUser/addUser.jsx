@@ -91,8 +91,9 @@ const AddUser = ({ setAddMode }) => {
   return (
     <div className="addUser">
       <div className="closeWrapper">
+        <p>Add User</p>
         <button onClick={handleClose} className="closeButton">
-          X
+          Close
         </button>
       </div>
       <form onSubmit={handleSearch}>

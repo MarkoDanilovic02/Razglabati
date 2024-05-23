@@ -62,16 +62,18 @@
   }
 
   .closeButton {
-    padding: 10px 15px;
-    border-radius: 60px;
+    padding: 10px 25px;
+    border-radius: 10px;
     background-color: #cc1c48;
     color: white;
     border: none;
     cursor: pointer;
-    margin-bottom: 15px;
   }
   .closeWrapper {
     display: flex;
+    gap: 150px;
     justify-content: end;
+    align-items: center;
+    margin-bottom: 15px;
   }
 }

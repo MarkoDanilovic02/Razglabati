@@ -43,7 +43,6 @@ const Login = () => {
 
     const { username, email, password } = Object.fromEntries(formData);
 
-    // VALIDATE INPUTS
     if (!username || !email || !password) {
       setLoading(false);
       return toast.warn("Please enter inputs!");
@@ -53,7 +52,6 @@ const Login = () => {
       return toast.warn("Please upload an avatar!");
     }
 
-    // VALIDATE UNIQUE USERNAME
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);

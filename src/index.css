@@ -5,7 +5,23 @@
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
+::-webkit-scrollbar {
+  width: 2px;
 
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #06b7e4;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #06b7e4;
+}
 body {
   background-image: url("/bg.jpg");
   display: flex;
