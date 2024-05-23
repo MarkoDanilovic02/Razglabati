@@ -1,10 +1,19 @@
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useChatStore } from "../../lib/chatStore";
 import { auth, db } from "../../lib/firebase";
 import { useUserStore } from "../../lib/userStore";
 import "./detail.css";
 
 const Detail = () => {
+  const [sharedPhotos, setSharedPhotos] = useState([]);
+  const [showPhotos, setShowPhotos] = useState(true);
   const {
     chatId,
     user,
@@ -14,6 +23,30 @@ const Detail = () => {
     resetChat,
   } = useChatStore();
   const { currentUser } = useUserStore();
+
+  useEffect(() => {
+    const fetchSharedPhotos = async () => {
+      if (!chatId) return;
+
+      const chatDocRef = doc(db, "chats", chatId);
+
+      try {
+        const chatDoc = await getDoc(chatDocRef);
+        if (chatDoc.exists()) {
+          const messages = chatDoc.data().messages || [];
+          const photos = messages
+            .filter((msg) => msg.img)
+            .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
+            .map((msg) => msg.img);
+          setSharedPhotos(photos);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchSharedPhotos();
+  }, [chatId]);
 
   const handleBlock = async () => {
     if (!user) return;
@@ -51,63 +84,30 @@ const Detail = () => {
         </div>
         <div className="option">
           <div className="title">
-            <span>Chat Settings</span>
-            <img src="./arrowUp.png" alt="" />
-          </div>
-        </div>
-        <div className="option">
-          <div className="title">
             <span>Privacy & help</span>
             <img src="./arrowUp.png" alt="" />
           </div>
         </div>
         <div className="option">
-          <div className="title">
+          <div className="title" onClick={() => setShowPhotos((prev) => !prev)}>
             <span>Shared photos</span>
-            <img src="./arrowDown.png" alt="" />
+            {showPhotos ? (
+              <img src="./arrowDown.png" alt="" />
+            ) : (
+              <img src="./arrowUp.png" alt="" />
+            )}
           </div>
-          <div className="photos">
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://images.pexels.com/photos/7381200/pexels-photo-7381200.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
+          {showPhotos && (
+            <div className="photos">
+              {sharedPhotos.map((photo, index) => (
+                <div className="photoItem" key={index}>
+                  <div className="photoDetail">
+                    <img src={photo} alt={`Shared photo ${index}`} />
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://images.pexels.com/photos/7381200/pexels-photo-7381200.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
-            </div>
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://images.pexels.com/photos/7381200/pexels-photo-7381200.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
-            </div>
-            <div className="photoItem">
-              <div className="photoDetail">
-                <img
-                  src="https://images.pexels.com/photos/7381200/pexels-photo-7381200.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
-                  alt=""
-                />
-                <span>photo_2024_2.png</span>
-              </div>
-              <img src="./download.png" alt="" className="icon" />
-            </div>
-          </div>
+          )}
         </div>
         <div className="option">
           <div className="title">
